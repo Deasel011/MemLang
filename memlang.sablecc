@@ -1,0 +1,76 @@
+Package memlang.syntax;
+
+Helpers
+
+    string_char = [[32..126]-'"'];
+    not_eol = [[0.0xffff]-[10+13]];
+
+    digit = ['0'..'9'];
+    letter = ['a'..'z'];
+
+Tokens
+
+    interpreter_escape = '$?$';
+    semi = ';';
+    comma = ',';
+    equals = '==';
+    n_equals = '!=';
+    w_assign = ':=';
+    assign = '=';
+    le = '<=';
+    lt = '<';
+    ge = '>=';
+    gt = '>';
+    plus = '+';
+    minus = '-';
+    star = '*';
+    slash = '/';
+    percent = '%';
+    not = '!';
+    l_brace = '{';
+    r_brace = '}';
+    l_par = '(';
+    r_par = ')';
+    or = '||';
+    vert_b = '|';
+    and = '&&';
+
+    eol = '[10+13]'
+
+    do = 'do';
+    else = 'else';
+    if = 'if';
+    print = 'print';
+    return = 'return';
+    then = 'then';
+    while = 'while';
+
+    listen = 'listen';
+    define = 'define';
+    pattern = 'pattern';
+    play_lang = 'pl';
+    target = 'target';
+    address = 'add';
+    agent = 'agent';
+
+
+    string = '"' string_char* '"';
+    number = digit+;
+    comment = '#' not_eol*;
+
+    blank = (' ')+;
+    comment = '#' not_eol*;
+
+Ignored Tokens
+
+    blank, comment;
+
+Productions
+
+    program =
+        {inter} interpretor_escape interpretor |
+        {simple} [defs]:define* [instructions]:instruction*;
+
+    interpretor =
+        {playlang} playlang |
+        {define} define |
