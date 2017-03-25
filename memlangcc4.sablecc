@@ -1,16 +1,15 @@
-Package memlang.syntax;
+Language memlang;
 
-Helpers
+Lexer
 
-    string_char = [[32..126]-'"'];
-    not_eol = [[0..0xffff]-[10+13]];
+    upper = 'A'..'Z';
+    lower = 'a'..'z';
+    digit = '0'..'9';
+    upper_hexa = 'A'..'F';
+    string_char = Any - (#10 | #13);
+    not_eol = Any - (#10 | #13);
+    letter = (upper | lower);
 
-    digit = ['0'..'9'];
-    letter = ['a'..'z'];
-
-Tokens
-
-    interpretor_escape = '$?$';
     semi = ';';
     comma = ',';
     equals = '==';
@@ -58,27 +57,29 @@ Tokens
     string = '"' string_char* '"';
     number = digit+;
     comment = '#' not_eol*;
+    hexa = '(digit | upper_hexa)+';
 
     blank = (' ')+;
     id = letter (letter | digit)*;
 
+Token
+    id;
 
-
-Ignored Tokens
+Ignored
 
     blank, comment;
 
-Productions
+Parser
 
     program =
-        {inter} interpretor_escape interpretor;
+        {inter:} interpretor;
 
     interpretor =
-        {target} target value |
-        {find} find value eol;
+        {target:} target value |
+        {find:} find value eol;
 
     value =
-        {hexa} hexa |
-        {string} string |
-        {num} number;
+        {hexa:} hexa |
+        {string:} string |
+        {num:} number;
 
