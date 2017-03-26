@@ -7,7 +7,7 @@ Helpers
 
     digit = ['0'..'9'];
     letter = ['a'..'z'];
-    hex = (digit | ['a'..'f'])
+    hex = (digit | ['a'..'f']);
 
 Tokens
 
