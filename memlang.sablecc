@@ -7,6 +7,7 @@ Helpers
 
     digit = ['0'..'9'];
     letter = ['a'..'z'];
+    hex = (digit | ['a'..'f'])
 
 Tokens
 
@@ -57,6 +58,7 @@ Tokens
 
     string = '"' string_char* '"';
     number = digit+;
+    hexa = '0' 'x' hex+;
     comment = '#' not_eol*;
 
     blank = (' ')+;
