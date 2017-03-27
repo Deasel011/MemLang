@@ -208,68 +208,80 @@ class TokenIndex extends AnalysisAdapter
     }
 
     @Override
-    public void caseTListen(@SuppressWarnings("unused") TListen node)
+    public void caseTList(@SuppressWarnings("unused") TList node)
     {
         this.index = 33;
     }
 
     @Override
-    public void caseTDefine(@SuppressWarnings("unused") TDefine node)
+    public void caseTListen(@SuppressWarnings("unused") TListen node)
     {
         this.index = 34;
     }
 
     @Override
-    public void caseTPattern(@SuppressWarnings("unused") TPattern node)
+    public void caseTDefine(@SuppressWarnings("unused") TDefine node)
     {
         this.index = 35;
     }
 
     @Override
-    public void caseTPlayLang(@SuppressWarnings("unused") TPlayLang node)
+    public void caseTPattern(@SuppressWarnings("unused") TPattern node)
     {
         this.index = 36;
     }
 
     @Override
-    public void caseTTarget(@SuppressWarnings("unused") TTarget node)
+    public void caseTPlayLang(@SuppressWarnings("unused") TPlayLang node)
     {
         this.index = 37;
     }
 
     @Override
-    public void caseTAddress(@SuppressWarnings("unused") TAddress node)
+    public void caseTTarget(@SuppressWarnings("unused") TTarget node)
     {
         this.index = 38;
     }
 
     @Override
-    public void caseTAgent(@SuppressWarnings("unused") TAgent node)
+    public void caseTAddress(@SuppressWarnings("unused") TAddress node)
     {
         this.index = 39;
     }
 
     @Override
-    public void caseTString(@SuppressWarnings("unused") TString node)
+    public void caseTAgent(@SuppressWarnings("unused") TAgent node)
     {
         this.index = 40;
     }
 
     @Override
-    public void caseTNumber(@SuppressWarnings("unused") TNumber node)
+    public void caseTString(@SuppressWarnings("unused") TString node)
     {
         this.index = 41;
     }
 
     @Override
-    public void caseTId(@SuppressWarnings("unused") TId node)
+    public void caseTNumber(@SuppressWarnings("unused") TNumber node)
     {
         this.index = 42;
     }
 
     @Override
-    public void caseEOF(@SuppressWarnings("unused") EOF node)
+    public void caseTHexa(@SuppressWarnings("unused") THexa node)
     {
         this.index = 43;
+    }
+
+    @Override
+    public void caseTId(@SuppressWarnings("unused") TId node)
+    {
+        this.index = 44;
+    }
+
+    @Override
+    public void caseEOF(@SuppressWarnings("unused") EOF node)
+    {
+        this.index = 45;
     }
 }

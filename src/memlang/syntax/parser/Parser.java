@@ -198,34 +198,70 @@ public class Parser
     {
         switch(reduction)
         {
-            case 0: /* reduce AInterProgram */
+            case 0: /* reduce AInstProgram */
             {
                 ArrayList<Object> list = new0();
                 push(goTo(0), list, false);
             }
             break;
-            case 1: /* reduce ATargetInterpretor */
+            case 1: /* reduce ATargetInst */
             {
                 ArrayList<Object> list = new1();
                 push(goTo(1), list, false);
             }
             break;
-            case 2: /* reduce AFindInterpretor */
+            case 2: /* reduce AExpInst */
             {
                 ArrayList<Object> list = new2();
                 push(goTo(1), list, false);
             }
             break;
-            case 3: /* reduce AStringValue */
+            case 3: /* reduce ADeclarationInst */
             {
                 ArrayList<Object> list = new3();
-                push(goTo(2), list, false);
+                push(goTo(1), list, false);
             }
             break;
-            case 4: /* reduce ANumValue */
+            case 4: /* reduce AListDeclaration */
             {
                 ArrayList<Object> list = new4();
                 push(goTo(2), list, false);
+            }
+            break;
+            case 5: /* reduce AAssignExp */
+            {
+                ArrayList<Object> list = new5();
+                push(goTo(3), list, false);
+            }
+            break;
+            case 6: /* reduce AFindExp */
+            {
+                ArrayList<Object> list = new6();
+                push(goTo(3), list, false);
+            }
+            break;
+            case 7: /* reduce AHexaTerm */
+            {
+                ArrayList<Object> list = new7();
+                push(goTo(4), list, false);
+            }
+            break;
+            case 8: /* reduce AStringTerm */
+            {
+                ArrayList<Object> list = new8();
+                push(goTo(4), list, false);
+            }
+            break;
+            case 9: /* reduce ANumTerm */
+            {
+                ArrayList<Object> list = new9();
+                push(goTo(4), list, false);
+            }
+            break;
+            case 10: /* reduce AParTerm */
+            {
+                ArrayList<Object> list = new10();
+                push(goTo(4), list, false);
             }
             break;
         }
@@ -234,21 +270,18 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new0() /* reduce AInterProgram */
+    ArrayList<Object> new0() /* reduce AInstProgram */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
-        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
         PProgram pprogramNode1;
         {
             // Block
-        TInterpretorEscape tinterpretorescapeNode2;
-        PInterpretor pinterpretorNode3;
-        tinterpretorescapeNode2 = (TInterpretorEscape)nodeArrayList1.get(0);
-        pinterpretorNode3 = (PInterpretor)nodeArrayList2.get(0);
+        PInst pinstNode2;
+        pinstNode2 = (PInst)nodeArrayList1.get(0);
 
-        pprogramNode1 = new AInterProgram(tinterpretorescapeNode2, pinterpretorNode3);
+        pprogramNode1 = new AInstProgram(pinstNode2);
         }
 	nodeList.add(pprogramNode1);
         return nodeList;
@@ -257,89 +290,224 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new1() /* reduce ATargetInterpretor */
+    ArrayList<Object> new1() /* reduce ATargetInst */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PInterpretor pinterpretorNode1;
+        PInst pinstNode1;
         {
             // Block
         TTarget ttargetNode2;
-        PValue pvalueNode3;
+        PTerm ptermNode3;
         ttargetNode2 = (TTarget)nodeArrayList1.get(0);
-        pvalueNode3 = (PValue)nodeArrayList2.get(0);
+        ptermNode3 = (PTerm)nodeArrayList2.get(0);
 
-        pinterpretorNode1 = new ATargetInterpretor(ttargetNode2, pvalueNode3);
+        pinstNode1 = new ATargetInst(ttargetNode2, ptermNode3);
         }
-	nodeList.add(pinterpretorNode1);
+	nodeList.add(pinstNode1);
         return nodeList;
     }
 
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new2() /* reduce AFindInterpretor */
+    ArrayList<Object> new2() /* reduce AExpInst */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PInst pinstNode1;
+        {
+            // Block
+        PExp pexpNode2;
+        pexpNode2 = (PExp)nodeArrayList1.get(0);
+
+        pinstNode1 = new AExpInst(pexpNode2);
+        }
+	nodeList.add(pinstNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new3() /* reduce ADeclarationInst */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PInst pinstNode1;
+        {
+            // Block
+        PDeclaration pdeclarationNode2;
+        pdeclarationNode2 = (PDeclaration)nodeArrayList1.get(0);
+
+        pinstNode1 = new ADeclarationInst(pdeclarationNode2);
+        }
+	nodeList.add(pinstNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new4() /* reduce AListDeclaration */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PDeclaration pdeclarationNode1;
+        {
+            // Block
+        TList tlistNode2;
+        TId tidNode3;
+        tlistNode2 = (TList)nodeArrayList1.get(0);
+        tidNode3 = (TId)nodeArrayList2.get(0);
+
+        pdeclarationNode1 = new AListDeclaration(tlistNode2, tidNode3);
+        }
+	nodeList.add(pdeclarationNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new5() /* reduce AAssignExp */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList3 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PInterpretor pinterpretorNode1;
+        PExp pexpNode1;
         {
             // Block
-        TFind tfindNode2;
-        PValue pvalueNode3;
-        TEol teolNode4;
-        tfindNode2 = (TFind)nodeArrayList1.get(0);
-        pvalueNode3 = (PValue)nodeArrayList2.get(0);
-        teolNode4 = (TEol)nodeArrayList3.get(0);
+        TId tidNode2;
+        TAssign tassignNode3;
+        PExp pexpNode4;
+        tidNode2 = (TId)nodeArrayList1.get(0);
+        tassignNode3 = (TAssign)nodeArrayList2.get(0);
+        pexpNode4 = (PExp)nodeArrayList3.get(0);
 
-        pinterpretorNode1 = new AFindInterpretor(tfindNode2, pvalueNode3, teolNode4);
+        pexpNode1 = new AAssignExp(tidNode2, tassignNode3, pexpNode4);
         }
-	nodeList.add(pinterpretorNode1);
+	nodeList.add(pexpNode1);
         return nodeList;
     }
 
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new3() /* reduce AStringValue */
+    ArrayList<Object> new6() /* reduce AFindExp */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList3 = pop();
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PExp pexpNode1;
+        {
+            // Block
+        TFind tfindNode2;
+        PTerm ptermNode3;
+        TEol teolNode4;
+        tfindNode2 = (TFind)nodeArrayList1.get(0);
+        ptermNode3 = (PTerm)nodeArrayList2.get(0);
+        teolNode4 = (TEol)nodeArrayList3.get(0);
+
+        pexpNode1 = new AFindExp(tfindNode2, ptermNode3, teolNode4);
+        }
+	nodeList.add(pexpNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new7() /* reduce AHexaTerm */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PValue pvalueNode1;
+        PTerm ptermNode1;
+        {
+            // Block
+        THexa thexaNode2;
+        thexaNode2 = (THexa)nodeArrayList1.get(0);
+
+        ptermNode1 = new AHexaTerm(thexaNode2);
+        }
+	nodeList.add(ptermNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new8() /* reduce AStringTerm */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PTerm ptermNode1;
         {
             // Block
         TString tstringNode2;
         tstringNode2 = (TString)nodeArrayList1.get(0);
 
-        pvalueNode1 = new AStringValue(tstringNode2);
+        ptermNode1 = new AStringTerm(tstringNode2);
         }
-	nodeList.add(pvalueNode1);
+	nodeList.add(ptermNode1);
         return nodeList;
     }
 
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new4() /* reduce ANumValue */
+    ArrayList<Object> new9() /* reduce ANumTerm */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PValue pvalueNode1;
+        PTerm ptermNode1;
         {
             // Block
         TNumber tnumberNode2;
         tnumberNode2 = (TNumber)nodeArrayList1.get(0);
 
-        pvalueNode1 = new ANumValue(tnumberNode2);
+        ptermNode1 = new ANumTerm(tnumberNode2);
         }
-	nodeList.add(pvalueNode1);
+	nodeList.add(ptermNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new10() /* reduce AParTerm */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList3 = pop();
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PTerm ptermNode1;
+        {
+            // Block
+        TLPar tlparNode2;
+        PExp pexpNode3;
+        TRPar trparNode4;
+        tlparNode2 = (TLPar)nodeArrayList1.get(0);
+        pexpNode3 = (PExp)nodeArrayList2.get(0);
+        trparNode4 = (TRPar)nodeArrayList3.get(0);
+
+        ptermNode1 = new AParTerm(tlparNode2, pexpNode3, trparNode4);
+        }
+	nodeList.add(ptermNode1);
         return nodeList;
     }
 
@@ -347,36 +515,52 @@ public class Parser
 
     private static int[][][] actionTable;
 /*      {
-			{{-1, ERROR, 0}, {0, SHIFT, 1}, },
-			{{-1, ERROR, 1}, {32, SHIFT, 3}, {37, SHIFT, 4}, },
-			{{-1, ERROR, 2}, {43, ACCEPT, -1}, },
-			{{-1, ERROR, 3}, {40, SHIFT, 6}, {41, SHIFT, 7}, },
-			{{-1, ERROR, 4}, {40, SHIFT, 6}, {41, SHIFT, 7}, },
+			{{-1, ERROR, 0}, {32, SHIFT, 1}, {33, SHIFT, 2}, {38, SHIFT, 3}, {44, SHIFT, 4}, },
+			{{-1, ERROR, 1}, {19, SHIFT, 9}, {41, SHIFT, 10}, {42, SHIFT, 11}, {43, SHIFT, 12}, },
+			{{-1, ERROR, 2}, {44, SHIFT, 14}, },
+			{{-1, ERROR, 3}, {19, SHIFT, 9}, {41, SHIFT, 10}, {42, SHIFT, 11}, {43, SHIFT, 12}, },
+			{{-1, ERROR, 4}, {6, SHIFT, 16}, },
+			{{-1, ERROR, 5}, {45, ACCEPT, -1}, },
 			{{-1, REDUCE, 0}, },
 			{{-1, REDUCE, 3}, },
-			{{-1, REDUCE, 4}, },
-			{{-1, ERROR, 8}, {24, SHIFT, 10}, },
-			{{-1, REDUCE, 1}, },
 			{{-1, REDUCE, 2}, },
+			{{-1, ERROR, 9}, {32, SHIFT, 1}, {44, SHIFT, 4}, },
+			{{-1, REDUCE, 8}, },
+			{{-1, REDUCE, 9}, },
+			{{-1, REDUCE, 7}, },
+			{{-1, ERROR, 13}, {24, SHIFT, 18}, },
+			{{-1, REDUCE, 4}, },
+			{{-1, REDUCE, 1}, },
+			{{-1, ERROR, 16}, {32, SHIFT, 1}, {44, SHIFT, 4}, },
+			{{-1, ERROR, 17}, {20, SHIFT, 20}, },
+			{{-1, REDUCE, 6}, },
+			{{-1, REDUCE, 5}, },
+			{{-1, REDUCE, 10}, },
         };*/
     private static int[][][] gotoTable;
 /*      {
-			{{-1, 2}, },
 			{{-1, 5}, },
-			{{-1, 8}, {4, 9}, },
+			{{-1, 6}, },
+			{{-1, 7}, },
+			{{-1, 8}, {9, 17}, {16, 19}, },
+			{{-1, 13}, {3, 15}, },
         };*/
     private static String[] errorMessages;
 /*      {
-			"expecting: '$?$'",
-			"expecting: 'find', 'target'",
+			"expecting: 'find', 'list', 'target', id",
+			"expecting: '(', string, number, hexa",
+			"expecting: id",
+			"expecting: '='",
 			"expecting: EOF",
-			"expecting: string, number",
+			"expecting: 'find', id",
 			"expecting: '[10+13]', EOF",
 			"expecting: '[10+13]'",
+			"expecting: ')'",
+			"expecting: ')', EOF",
         };*/
     private static int[] errors;
 /*      {
-			0, 1, 2, 3, 3, 2, 4, 4, 5, 2, 2, 
+			0, 1, 2, 1, 3, 4, 4, 4, 4, 5, 6, 6, 6, 7, 4, 4, 5, 8, 9, 9, 6, 
         };*/
 
     static 

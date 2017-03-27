@@ -27,6 +27,6 @@ public class StringValue extends Value {
     @Override
     public String toString() {
 
-        return "" + this.value;
+        return "" + this.value.substring(1,this.value.length()-1);
     }
 }

@@ -43,6 +43,12 @@ public class MemLangInterpretor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert syntaxTree != null;
+        try {
+            syntaxTree.apply(new Interpretor());
+        }catch(RuntimeException e){
+            e.printStackTrace();
+        }
 
     }
 }

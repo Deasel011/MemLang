@@ -12,11 +12,17 @@ public interface Analysis extends Switch
     void setOut(Node node, Object o);
 
     void caseStart(Start node);
-    void caseAInterProgram(AInterProgram node);
-    void caseATargetInterpretor(ATargetInterpretor node);
-    void caseAFindInterpretor(AFindInterpretor node);
-    void caseAStringValue(AStringValue node);
-    void caseANumValue(ANumValue node);
+    void caseAInstProgram(AInstProgram node);
+    void caseATargetInst(ATargetInst node);
+    void caseAExpInst(AExpInst node);
+    void caseADeclarationInst(ADeclarationInst node);
+    void caseAListDeclaration(AListDeclaration node);
+    void caseAAssignExp(AAssignExp node);
+    void caseAFindExp(AFindExp node);
+    void caseAHexaTerm(AHexaTerm node);
+    void caseAStringTerm(AStringTerm node);
+    void caseANumTerm(ANumTerm node);
+    void caseAParTerm(AParTerm node);
 
     void caseTInterpretorEscape(TInterpretorEscape node);
     void caseTSemi(TSemi node);
@@ -51,6 +57,7 @@ public interface Analysis extends Switch
     void caseTThen(TThen node);
     void caseTWhile(TWhile node);
     void caseTFind(TFind node);
+    void caseTList(TList node);
     void caseTListen(TListen node);
     void caseTDefine(TDefine node);
     void caseTPattern(TPattern node);
@@ -60,6 +67,7 @@ public interface Analysis extends Switch
     void caseTAgent(TAgent node);
     void caseTString(TString node);
     void caseTNumber(TNumber node);
+    void caseTHexa(THexa node);
     void caseTComment(TComment node);
     void caseTBlank(TBlank node);
     void caseTId(TId node);

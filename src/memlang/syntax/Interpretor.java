@@ -21,6 +21,8 @@ public class Interpretor extends DepthFirstAdapter {
 
     public Value result;
 
+    private long targetProcessId;
+
     private HashMap<BigInteger,BigInteger> addresses = new HashMap<>();
 
     private Pointer targetProcess;
@@ -65,28 +67,23 @@ public class Interpretor extends DepthFirstAdapter {
         return result;
     }
 
-
-
     @Override
-    public void caseATargetInterpretor(ATargetInterpretor node) {
-        String processName = ((StringValue)eval(node.getValue())).toString();
-        System.out.println(processName);
+    public void caseATargetInst(ATargetInst node) {
+        StringValue name = (StringValue)eval(node.getTerm());
+        this.targetProcessId = WindowsMemoryManipulator.FindProcessId(name.toString());
+        System.out.println(this.targetProcessId);
+        if (this.targetProcessId == 0){
+            throw new RuntimeException("There is no "+name.toString()+" process running.");
+        }
     }
 
     @Override
-    public void caseAFindInterpretor(AFindInterpretor node) {
-
-        super.caseAFindInterpretor(node);
+    public void caseANumTerm(ANumTerm node) {
+        this.result = new NumValue(Integer.parseInt(node.getNumber().getText()));
     }
 
     @Override
-    public void caseANumValue(ANumValue node) {
-
-        this.integerResult = Integer.parseInt(node.getNumber().getText());
-    }
-
-    @Override
-    public void caseAStringValue(AStringValue node) {
-        this.stringResult = node.getString().getText();
+    public void caseAStringTerm(AStringTerm node) {
+        this.result = new StringValue(node.getString().getText());
     }
 }

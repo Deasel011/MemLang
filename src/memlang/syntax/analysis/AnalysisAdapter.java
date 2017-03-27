@@ -75,31 +75,67 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAInterProgram(AInterProgram node)
+    public void caseAInstProgram(AInstProgram node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseATargetInterpretor(ATargetInterpretor node)
+    public void caseATargetInst(ATargetInst node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAFindInterpretor(AFindInterpretor node)
+    public void caseAExpInst(AExpInst node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAStringValue(AStringValue node)
+    public void caseADeclarationInst(ADeclarationInst node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseANumValue(ANumValue node)
+    public void caseAListDeclaration(AListDeclaration node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAAssignExp(AAssignExp node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAFindExp(AFindExp node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAHexaTerm(AHexaTerm node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAStringTerm(AStringTerm node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseANumTerm(ANumTerm node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAParTerm(AParTerm node)
     {
         defaultCase(node);
     }
@@ -303,6 +339,12 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
+    public void caseTList(TList node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
     public void caseTListen(TListen node)
     {
         defaultCase(node);
@@ -352,6 +394,12 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseTNumber(TNumber node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTHexa(THexa node)
     {
         defaultCase(node);
     }

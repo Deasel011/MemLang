@@ -37,7 +37,6 @@ Tokens
     and = '&&';
 
     eol = '[10+13]';
-
     do = 'do';
     else = 'else';
     if = 'if';
@@ -47,6 +46,7 @@ Tokens
     while = 'while';
 
     find = 'find';
+    list = 'list';
     listen = 'listen';
     define = 'define';
     pattern = 'pattern';
@@ -73,14 +73,23 @@ Ignored Tokens
 Productions
 
     program =
-        {inter} interpretor_escape interpretor;
+        {inst} inst;
 
-    interpretor =
-        {target} target value |
-        {find} find value eol;
+    inst =
+        {target} target term|
+        {exp} exp|
+        {declaration} declaration;
 
-    value =
+    declaration =
+            {list} list id;
+
+    exp =
+        {assign} id assign exp|
+        {find} find term eol;
+
+    term =
         {hexa} hexa |
         {string} string |
-        {num} number;
+        {num} number|
+        {par} l_par exp r_par;
 
