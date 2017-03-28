@@ -32,6 +32,12 @@ public class MemManip {
     public int PID = 0;
     Memory memBuffer;
 
+    /**
+     * From Hybris95 at UnknownCheats
+     * Modified by Deasel011 (philippe)
+     * @param processName
+     * @return
+     */
     public int FindProcessId(String processName) {
         // This Reference will contain the processInfo that will be parsed to recover the ProcessId
         Tlhelp32.PROCESSENTRY32.ByReference processInfo = new Tlhelp32.PROCESSENTRY32.ByReference();
@@ -113,6 +119,11 @@ public class MemManip {
         return this.valueContainer.size();
     }
 
+    /**
+     * From project jpexs-decompiler-master, cited at Programcreek.com example 4
+     * @param hOtherProcess
+     * @return
+     */
     public static List<WinNT.MEMORY_BASIC_INFORMATION> getPageRanges(WinNT.HANDLE hOtherProcess) {
         List<WinNT.MEMORY_BASIC_INFORMATION> ret = new ArrayList<>();
         WinNT.MEMORY_BASIC_INFORMATION mbi;
