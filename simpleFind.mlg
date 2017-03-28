@@ -1,25 +1,9 @@
-% target "MarcoPolo.exe"
-% Size = 32
+Target = "Game.exe"
+Size = 4
 
-list valList = find 500 #gives a key/value list where key is an address and value is the value at this address
-var value = pinpoint valList 700 2:, 805 :14 #throws error if one single value cannot be targeted
-
-
-
-
- - - - - - - - - - - - - - - - - - - - - - - - - -
-#{  - - This is what pinpoint does, which is also valid code - -
-foreach(value in valList)
-    if not checkfor 700 2 bytes earlier then
-       remove value from valList
-    if !cf 700 2: then
-       rm value valList
-
-if sizeof valList > 1 then
-    if !cf 805 :14 then
-        rm value valList
-    else
-        err "Value could not be pinpointed"
-
-var tar = pinpoint valList 700 2:, 805 :14 #throws error if one single value cannot be targeted
-}#
+field vallist
+vallist = find 384 #gives a key/value list where key is an address and value is the value at this address
+wait 5
+vallist = narrow 383
+wait 5
+print vallist #prints the value of the addresses, will print different values if the narrow was not strict enough

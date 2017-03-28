@@ -1,12 +1,16 @@
 package memlang.syntax;
 
+import MemManip.MemManip;
 import com.sun.jna.Pointer;
 import memlang.syntax.analysis.DepthFirstAdapter;
 import memlang.syntax.node.*;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.sun.jna.Memory;
 
@@ -15,17 +19,114 @@ import com.sun.jna.Memory;
  */
 public class Interpretor extends DepthFirstAdapter {
 
-    public int integerResult;
+    private Value result;
 
-    public String stringResult;
+    private String target;
 
-    public Value result;
+    private int size;
 
-    private long targetProcessId;
+    private MemManip manipulator = new MemManip();
 
-    private HashMap<BigInteger,BigInteger> addresses = new HashMap<>();
+    private HashMap<String, Integer> adressResult;
 
-    private Pointer targetProcess;
+    private HashMap<String,HashMap<String,Integer>> fieldDictionnary = new HashMap<>();
+
+    @Override
+    public void caseATargetPrecondition(ATargetPrecondition node) {
+        this.target = node.getString().getText().substring(1,node.getString().getText().length()-1);
+        manipulator.PID = manipulator.FindProcessId(this.target);
+        manipulator.OpenProcess();
+        manipulator.loadPageRanges();
+        if(!manipulator.hasProcessId()){
+            throw new RuntimeException("Process could not be opened at ["+node.getTarget().getLine()+"]["+node.getTarget().getPos()+"].");
+        }
+    }
+
+    @Override
+    public void caseASizePrecondition(ASizePrecondition node) {
+        this.size = Integer.parseInt(node.getNumber().getText());
+    }
+
+    /**
+     * Verification des preconditions avant d'entre dans le programme,
+     * Size et Target doivent etre declares
+     * @param node
+     */
+    @Override
+    public void caseAInstsProgram(AInstsProgram node) {
+        visit(node.getPrecondition());
+        checkForTarget();
+        visit(node.getInst());
+        visit(node.getExecute());
+    }
+
+    @Override
+    public void caseADeclarationInst(ADeclarationInst node) {
+        String id = node.getId().getText();
+        this.fieldDictionnary.put(id,new HashMap<String, Integer>());
+    }
+
+    @Override
+    public void caseAAssignInst(AAssignInst node) {
+        visit(node.getOper());
+        String id = node.getId().getText();
+        assert this.fieldDictionnary.containsKey(id);
+        this.fieldDictionnary.get(id).clear();
+        this.fieldDictionnary.get(id).putAll(this.adressResult);
+    }
+
+    @Override
+    public void caseAFindOper(AFindOper node) {
+        try {
+            manipulator.searchFor(Integer.parseInt(node.getNumber().getText()), this.size);
+        } catch (Exception e) {
+            throw new RuntimeException("Process is not accessible at ["+node.getNumber().getLine()+"]["+node.getNumber().getPos()+"].");
+        }
+        this.adressResult = manipulator.valueContainer;
+    }
+
+    @Override
+    public void caseAWaitInst(AWaitInst node) {
+        try {
+            TimeUnit.SECONDS.sleep(Integer.parseInt(node.getNumber().getText()));
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Wait command was interrupted at ["+node.getWait().getLine()+"]["+node.getWait().getPos()+"].");
+        }
+
+    }
+
+    @Override
+    public void caseANarrowOper(ANarrowOper node) {
+        try {
+            manipulator.narrow(Integer.parseInt(node.getNumber().getText()), this.size);
+        } catch (Exception e) {
+            throw new RuntimeException("Process is not accessible at ["+node.getNumber().getLine()+"]["+node.getNumber().getPos()+"].");
+        }
+        this.adressResult = manipulator.valueContainer;
+    }
+
+    @Override
+    public void caseAPrintInst(APrintInst node) {
+        HashMap<String, Integer> addresses = this.fieldDictionnary.get(node.getId().getText());
+        HashSet<Integer> set=new HashSet<>();
+        System.out.println(this.fieldDictionnary.size());
+        for(Map.Entry<String, Integer> entry:addresses.entrySet()){
+            set.add(entry.getValue());
+        }
+        if(set.size()==1){
+            for(Integer number:set){
+                System.out.println("Value of "+node.getId().getText()+" is "+number);
+            }
+        }else if(set.size()>1){
+            System.out.println("Multiple values found for "+node.getId().getText());
+            for(Integer number:set){
+                System.out.println(number);
+            }
+        }else{
+            System.out.println(node.getId().getText()+" is Empty");
+        }
+
+    }
 
     /** visit node, if not null */
     public void visit(
@@ -67,23 +168,12 @@ public class Interpretor extends DepthFirstAdapter {
         return result;
     }
 
-    @Override
-    public void caseATargetInst(ATargetInst node) {
-        StringValue name = (StringValue)eval(node.getTerm());
-        this.targetProcessId = WindowsMemoryManipulator.FindProcessId(name.toString());
-        System.out.println(this.targetProcessId);
-        if (this.targetProcessId == 0){
-            throw new RuntimeException("There is no "+name.toString()+" process running.");
+    private void checkForTarget(){
+        if (this.target == null){
+            throw new RuntimeException("Target process is not defined before program calls.");
         }
-    }
-
-    @Override
-    public void caseANumTerm(ANumTerm node) {
-        this.result = new NumValue(Integer.parseInt(node.getNumber().getText()));
-    }
-
-    @Override
-    public void caseAStringTerm(AStringTerm node) {
-        this.result = new StringValue(node.getString().getText());
+        if(this.size == 0){
+            throw new RuntimeException("Data size has not been defined before program calls.");
+        }
     }
 }

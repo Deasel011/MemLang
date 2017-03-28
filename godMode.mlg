@@ -1,0 +1,48 @@
+Target "Diablo2.exe"
+Size = 4 #4 bytes soit des tailles de int
+
+field playergold
+playergold = find 384
+wait 5
+playergold = narrow 383
+wait 5
+playergold = narrow 383
+
+field playerhp
+playerhp = find 1337
+wait 5
+playerhp = narrow > 1000
+wait 5
+playerhp = narrow < 1000
+wait 5
+playerhp = narrow 0
+
+field playermagic
+playermagic = find 2000
+wait 5
+playermagic = narrow < 2000
+wait 5
+playermagic = narrow < 1500
+wait 5
+playermagic = narrow < 1000
+wait 10
+playermagic = narrow < 500
+
+field playerstamina
+playerstamina = find 434
+wait 5
+playerstamina = narrow < 400
+wait 5
+playerstamina = narrow < 300
+wait 5
+playerstamina = narrow > 300
+
+wait 5
+assert playergold, playerhp, playermagic, playerstamina #verifie que les addresses de chaque champ referent tous a la meme valeur
+
+execute {
+    set playerhp 1337
+    set playermana 2000
+    set playergold 999999
+    set playerstamina 400
+}

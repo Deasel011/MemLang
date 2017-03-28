@@ -9,12 +9,12 @@ public final class TTarget extends Token
 {
     public TTarget()
     {
-        super.setText("target");
+        super.setText("Target");
     }
 
     public TTarget(int line, int pos)
     {
-        super.setText("target");
+        super.setText("Target");
         setLine(line);
         setPos(pos);
     }

@@ -7,11 +7,9 @@ Helpers
 
     digit = ['0'..'9'];
     letter = ['a'..'z'];
-    hex = (digit | ['a'..'f']);
 
 Tokens
 
-    interpretor_escape = '$?$';
     semi = ';';
     comma = ',';
     equals = '==';
@@ -33,35 +31,27 @@ Tokens
     l_par = '(';
     r_par = ')';
     or = '||';
-    vert_b = '|';
     and = '&&';
 
     eol = '[10+13]';
-    do = 'do';
-    else = 'else';
-    if = 'if';
-    print = 'print';
-    return = 'return';
-    then = 'then';
     while = 'while';
 
     find = 'find';
-    list = 'list';
-    listen = 'listen';
-    define = 'define';
-    pattern = 'pattern';
-    play_lang = 'pl';
-    target = 'target';
-    address = 'add';
-    agent = 'agent';
+    field = 'field';
+    set = 'set';
+    wait = 'wait';
+    assert = 'assert';
+    narrow = 'narrow';
+    print = 'print';
+    target = 'Target';
+    size = 'Size';
 
 
     string = '"' string_char* '"';
     number = digit+;
-    hexa = '0' 'x' hex+;
     comment = '#' not_eol*;
 
-    blank = (' ')+;
+    blank = (' '|13|10)+;
     id = letter (letter | digit)*;
 
 
@@ -73,23 +63,33 @@ Ignored Tokens
 Productions
 
     program =
-        {inst} inst;
+        {insts} precondition* inst* execute?;
+
+    precondition =
+        {target} target assign string|
+        {size} size assign number;
 
     inst =
-        {target} target term|
-        {exp} exp|
-        {declaration} declaration;
+        {declaration} field id|
+        {assign} id assign oper|
+        {wait} wait number|
+        {set} set id number|
+        {print} print id|
+        {assert} assert [ids]:multiple_ids* id;
 
-    declaration =
-            {list} list id;
+    multiple_ids =
+        id comma;
 
-    exp =
-        {assign} id assign exp|
-        {find} find term eol;
+    oper =
+        {find} find number |
+        {narrow} narrow sign? number;
 
-    term =
-        {hexa} hexa |
-        {string} string |
-        {num} number|
-        {par} l_par exp r_par;
+    sign =
+        {lt} lt|
+        {gt} gt|
+        {ge} ge|
+        {le} le|
+        {equals} equals;
 
+    execute =
+        execute l_brace inst* r_brace;

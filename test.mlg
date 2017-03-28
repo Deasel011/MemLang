@@ -1,0 +1,10 @@
+Target = "Grim Dawn.exe"
+Size = 4
+
+field gold
+gold = find 6100
+wait 10
+gold = narrow 6102
+wait 10
+
+print gold
