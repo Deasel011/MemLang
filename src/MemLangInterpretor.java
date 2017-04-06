@@ -1,4 +1,4 @@
-import memlang.syntax.Interpretor;
+import memlang.interpretor.Interpretor;
 import memlang.syntax.lexer.Lexer;
 import memlang.syntax.lexer.LexerException;
 import memlang.syntax.node.Node;
@@ -19,6 +19,7 @@ public class MemLangInterpretor {
 
         if (args.length == 0) {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            Interpretor runnable = new Interpretor();
             try {
                 String s = br.readLine();
                 while(s!=null){
@@ -35,7 +36,7 @@ public class MemLangInterpretor {
                     }
                     assert syntaxTree != null;
                     try {
-                        syntaxTree.apply(new Interpretor());
+                        syntaxTree.apply(runnable);
                     }catch(RuntimeException e){
                         e.printStackTrace();
                     }catch (java.lang.UnsatisfiedLinkError e){

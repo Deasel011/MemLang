@@ -1,18 +1,11 @@
-package memlang.syntax;
+package memlang.interpretor;
 
 import MemManip.MemManip;
-import com.sun.jna.Pointer;
 import memlang.syntax.analysis.DepthFirstAdapter;
 import memlang.syntax.node.*;
 
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import com.sun.jna.Memory;
 
 /**
  * Created by pdesl on 2017-02-21.
@@ -29,7 +22,7 @@ public class Interpretor extends DepthFirstAdapter {
 
     private HashMap<String, Integer> adressResult;
 
-    private HashMap<String,HashMap<String,Integer>> fieldDictionnary = new HashMap<>();
+    private HashMap<String,LinkedHashMap<String,Integer>> fieldDictionnary = new HashMap<>();
 
     @Override
     public void caseATargetPrecondition(ATargetPrecondition node) {
@@ -63,7 +56,7 @@ public class Interpretor extends DepthFirstAdapter {
     @Override
     public void caseADeclarationInst(ADeclarationInst node) {
         String id = node.getId().getText();
-        this.fieldDictionnary.put(id,new HashMap<String, Integer>());
+        this.fieldDictionnary.put(id,new LinkedHashMap<String, Integer>());
     }
 
     @Override
@@ -126,6 +119,16 @@ public class Interpretor extends DepthFirstAdapter {
             System.out.println(node.getId().getText()+" is Empty");
         }
 
+    }
+
+    @Override
+    public void caseASetInst(ASetInst node) {
+        String id = node.getId().getText();
+        manipulator.valueContainer = this.fieldDictionnary.get(id);
+        boolean res = manipulator.set(Integer.parseInt(node.getNumber().getText()),this.size);
+        if (!res){
+            System.out.println("Value could not be set to "+node.getNumber().getText());
+        }
     }
 
     /** visit node, if not null */

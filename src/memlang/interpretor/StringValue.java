@@ -1,4 +1,4 @@
-package memlang.syntax;
+package memlang.interpretor;
 
 /**
  * Created by pdesl on 2017-03-25.
