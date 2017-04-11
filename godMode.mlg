@@ -1,4 +1,4 @@
-Target "Diablo2.exe"
+Target = "Diablo2.exe"
 Size = 4 #4 bytes soit des tailles de int
 
 field playergold

@@ -15,7 +15,7 @@ public class MemLangInterpretor {
 
     public static void main(String[] args){
         PushbackReader in = null;
-        Scanner userInput = new Scanner(System.in);
+//        Scanner userInput = new Scanner(System.in);
 
         if (args.length == 0) {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
