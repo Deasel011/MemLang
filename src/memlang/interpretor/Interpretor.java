@@ -24,6 +24,10 @@ public class Interpretor extends DepthFirstAdapter {
 
     private HashMap<String,LinkedHashMap<String,Integer>> fieldDictionnary = new HashMap<>();
 
+    private HashMap<String, ExecuteThread> executeDict = new HashMap<>();
+
+    private HashMap<String, Timer> timerDict = new HashMap<>();
+
     @Override
     public void caseATargetPrecondition(ATargetPrecondition node) {
         this.target = node.getString().getText().substring(1,node.getString().getText().length()-1);
@@ -73,6 +77,7 @@ public class Interpretor extends DepthFirstAdapter {
         try {
             manipulator.searchFor(Integer.parseInt(node.getNumber().getText()), this.size);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Process is not accessible at ["+node.getNumber().getLine()+"]["+node.getNumber().getPos()+"].");
         }
         this.adressResult = manipulator.valueContainer;
@@ -114,6 +119,29 @@ public class Interpretor extends DepthFirstAdapter {
         if (!res){
             System.out.println("Value could not be set to "+node.getNumber().getText());
         }
+    }
+
+    @Override
+    public void caseAExecute(AExecute node) {
+        executeDict.put(node.getId().getText(),new ExecuteThread(node){
+            public void run(){
+                visit(((AExecute) currentNode).getInst());
+            }
+        });
+        Timer timer = new Timer(true);
+        timerDict.put(node.getId().getText(),timer);
+        timer.schedule(executeDict.get(node.getId().getText()),0,Integer.parseInt(node.getNumber().getText()));
+    }
+
+    @Override
+    public void caseAStopInst(AStopInst node) {
+        Timer timer = timerDict.get(node.getId().getText());
+        if (timer == null){
+            throw new RuntimeException("This timer thread does not exist");
+        }
+        timer.cancel();
+        executeDict.remove(node.getId().getText());
+        System.out.println("exec "+node.getId().getText()+" has stopped.");
     }
 
     /** visit node, if not null */

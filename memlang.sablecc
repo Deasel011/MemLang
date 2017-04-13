@@ -45,6 +45,7 @@ Tokens
     print = 'print';
     target = 'Target';
     size = 'Size';
+    exec = 'exec';
     stop = 'stop';
 
 
@@ -94,4 +95,4 @@ Productions
         {equals} equals;
 
     execute =
-        execute number l_brace inst* r_brace;
+        exec id number l_brace inst* r_brace;

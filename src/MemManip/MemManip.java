@@ -2,7 +2,6 @@ package MemManip;
 /**
  * Created by Philippe on 2017-03-26.
  */
-
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -73,14 +72,12 @@ public class MemManip {
 
     public boolean OpenProcess() {
         this.processHandle = kernel32.OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_INFORMATION | PROCESS_VM_WRITE | PROCESS_VM_OPERATION, true, this.PID);
-        System.out.println("Last error code:"+kernel32.GetLastError());
         return this.processHandle != null;
     }
 
     public int searchFor(int value, int size) {
         this.valueContainer = new LinkedHashMap<>();
         memBuffer = new Memory(size);
-        Pointer add = new Pointer(0);
         IntByReference readBytes = new IntByReference(0);
 
         for (WinNT.MEMORY_BASIC_INFORMATION page : this.readablePages) {
@@ -90,7 +87,7 @@ public class MemManip {
             long memSize = pointerToAddress(last) - pointerToAddress(current);
             memBuffer = new Memory((int) memSize);
             kernel32.ReadProcessMemory(this.processHandle, current, memBuffer, (int) memSize, readBytes);
-            while (offset < (int) memSize - 2) {
+            while (offset < (int) memSize - size) {
                 memBuffer.getInt(offset);
                 if (value == memBuffer.getInt(offset)) {
                     valueContainer.put(String.format("0x%08X", offset + pointerToAddress(current)), memBuffer.getInt(offset));
@@ -124,10 +121,10 @@ public class MemManip {
     public boolean set(int value, int size){
         assert size == 4;
         boolean res = false;
+        memBuffer = new Memory(size);
+        memBuffer.setInt(0,value);
         for (Map.Entry<String, Integer> entry : this.valueContainer.entrySet()) {
             String entryKey = entry.getKey();
-            memBuffer = new Memory(size);
-            memBuffer.setInt(0,value);
             kernel32.WriteProcessMemory(this.processHandle, new Pointer(addressToLong(entryKey)), memBuffer, size, new IntByReference(0));
             if (kernel32.GetLastError() == 0)
                 res = true;
@@ -201,12 +198,12 @@ public class MemManip {
             Pointer current = page.baseAddress;
             Pointer last = new Pointer(pointerToAddress(page.baseAddress) + page.regionSize.longValue());
             long memSize = pointerToAddress(last) - pointerToAddress(current);
-            if (memSize > 1955555) {
+            if (memSize > 1921024) {
                 oldPage = page;
                 newPage = page;
                 lastPage = page;
-                oldPage.regionSize = new BaseTSD.SIZE_T(1955554);
-                newPage.baseAddress = new Pointer(pointerToAddress(page.baseAddress) + 1955554);
+                oldPage.regionSize = new BaseTSD.SIZE_T(1921024);
+                newPage.baseAddress = new Pointer(pointerToAddress(page.baseAddress) + 1921024);
 
                 fractured = true;
                 break;
