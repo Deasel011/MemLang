@@ -6,7 +6,6 @@ package MemManip;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.*;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.W32APIOptions;
@@ -101,6 +100,7 @@ public class MemManip {
             }
 
         }
+        System.out.println("Done.");
         return this.valueContainer.size();
     }
 
@@ -116,6 +116,7 @@ public class MemManip {
                 System.out.println(entryKey + ":" + memBuffer.getInt(0));
             }
         }
+        System.out.println("Done.");
         this.valueContainer = temp;
         return this.valueContainer.size();
     }
@@ -212,9 +213,6 @@ public class MemManip {
             }
 
         }
-        /**
-         *  TODO:This is VERY RISKY CODE... MUST REFACTOR TO SAFE HAVEN (aka no possibility for infinite loop)
-         */
         if (fractured) {
             this.readablePages.remove(this.readablePages.indexOf(lastPage));
             this.readablePages.add(oldPage);
@@ -222,6 +220,15 @@ public class MemManip {
             return fractureMemChunks();
         }
         return true;
+    }
+
+    public int intAtSingleEntry(int size){
+        for (Map.Entry<String, Integer> entry : this.valueContainer.entrySet()) {
+            String entryKey = entry.getKey();
+            memBuffer = new Memory(4);
+            kernel32.ReadProcessMemory(this.processHandle, new Pointer(MemManip.addressToLong(entryKey)), memBuffer, 4, new IntByReference(0));
+        }
+        return memBuffer.getInt(0);
     }
 
     public boolean hasProcessId(){

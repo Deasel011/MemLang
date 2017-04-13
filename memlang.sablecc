@@ -45,6 +45,7 @@ Tokens
     print = 'print';
     target = 'Target';
     size = 'Size';
+    stop = 'stop';
 
 
     string = '"' string_char* '"';
@@ -75,7 +76,8 @@ Productions
         {wait} wait number|
         {set} set id number|
         {print} print id|
-        {assert} assert [ids]:multiple_ids* id;
+        {assert} assert [ids]:multiple_ids* id|
+        {stop} stop id;
 
     multiple_ids =
         id comma;

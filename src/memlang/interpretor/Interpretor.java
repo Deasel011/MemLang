@@ -100,24 +100,29 @@ public class Interpretor extends DepthFirstAdapter {
 
     @Override
     public void caseAPrintInst(APrintInst node) {
-        HashMap<String, Integer> addresses = this.fieldDictionnary.get(node.getId().getText());
-        HashSet<Integer> set=new HashSet<>();
-        System.out.println(this.fieldDictionnary.size());
-        for(Map.Entry<String, Integer> entry:addresses.entrySet()){
-            set.add(entry.getValue());
-        }
-        if(set.size()==1){
-            for(Integer number:set){
-                System.out.println("Value of "+node.getId().getText()+" is "+number);
-            }
-        }else if(set.size()>1){
-            System.out.println("Multiple values found for "+node.getId().getText());
-            for(Integer number:set){
-                System.out.println(number);
-            }
-        }else{
-            System.out.println(node.getId().getText()+" is Empty");
-        }
+        LinkedHashMap<String, Integer> addresses = this.fieldDictionnary.get(node.getId().getText());
+        manipulator.valueContainer = addresses;
+        int number = manipulator.intAtSingleEntry(this.size);
+        System.out.println("Value of "+node.getId().getText()+" is "+number);
+
+
+//        HashSet<Integer> set=new HashSet<>();
+//        System.out.println(this.fieldDictionnary.size());
+//        for(Map.Entry<String, Integer> entry:addresses.entrySet()){
+//            set.add(entry.getValue());
+//        }
+//        if(set.size()==1){
+//            for(Integer number:set){
+//                System.out.println("Value of "+node.getId().getText()+" is "+number);
+//            }
+//        }else if(set.size()>1){
+//            System.out.println("Multiple values found for "+node.getId().getText());
+//            for(Integer number:set){
+//                System.out.println(number);
+//            }
+//        }else{
+//            System.out.println(node.getId().getText()+" is Empty");
+//        }
 
     }
 
