@@ -2,8 +2,10 @@ package memlang.interpretor;
 
 /**
  * Created by pdesl on 2017-03-25.
+ * Future: extend this to dynamically look for floats, 4 byte ints, 8 bytes ints and more!
  */
 public class NumValue extends Value {
+
 
     private int value;
 

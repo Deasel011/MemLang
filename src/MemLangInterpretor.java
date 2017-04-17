@@ -1,4 +1,5 @@
 import memlang.interpretor.Interpretor;
+import memlang.interpretor.MlException;
 import memlang.syntax.lexer.Lexer;
 import memlang.syntax.lexer.LexerException;
 import memlang.syntax.node.Node;
@@ -37,6 +38,8 @@ public class MemLangInterpretor {
                     assert syntaxTree != null;
                     try {
                         syntaxTree.apply(runnable);
+                    }catch (MlException e){
+                        System.out.println(e.getMessage());
                     }catch(RuntimeException e){
                         e.printStackTrace();
                     }catch (java.lang.UnsatisfiedLinkError e){

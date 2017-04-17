@@ -35,7 +35,7 @@ public class Interpretor extends DepthFirstAdapter {
         manipulator.OpenProcess();
         manipulator.loadPageRanges();
         if(!manipulator.hasProcessId()){
-            throw new RuntimeException("Process could not be opened at ["+node.getTarget().getLine()+"]["+node.getTarget().getPos()+"].");
+            throw new MlException("Process could not be opened "+node.getTarget());
         }
     }
 
@@ -77,8 +77,7 @@ public class Interpretor extends DepthFirstAdapter {
         try {
             manipulator.searchFor(Integer.parseInt(node.getNumber().getText()), this.size);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Process is not accessible at ["+node.getNumber().getLine()+"]["+node.getNumber().getPos()+"].");
+            throw new MlException("Process is not accessible ",node.getNumber());
         }
         this.adressResult = manipulator.valueContainer;
     }
@@ -88,7 +87,7 @@ public class Interpretor extends DepthFirstAdapter {
         try {
             TimeUnit.SECONDS.sleep(Integer.parseInt(node.getNumber().getText()));
         } catch (InterruptedException e) {
-            throw new RuntimeException("Wait command was interrupted at ["+node.getWait().getLine()+"]["+node.getWait().getPos()+"].");
+            throw new MlException("Wait command was interrupted "+node.getWait());
         }
 
     }
@@ -98,7 +97,7 @@ public class Interpretor extends DepthFirstAdapter {
         try {
             manipulator.narrow(Integer.parseInt(node.getNumber().getText()), this.size);
         } catch (Exception e) {
-            throw new RuntimeException("Process is not accessible at ["+node.getNumber().getLine()+"]["+node.getNumber().getPos()+"].");
+            throw new MlException("Process is not accessible ", node.getNumber());
         }
         this.adressResult = manipulator.valueContainer;
     }
@@ -137,7 +136,7 @@ public class Interpretor extends DepthFirstAdapter {
     public void caseAStopInst(AStopInst node) {
         Timer timer = timerDict.get(node.getId().getText());
         if (timer == null){
-            throw new RuntimeException("This timer thread does not exist");
+            throw new MlException("This timer thread does not exist", node.getStop());
         }
         timer.cancel();
         executeDict.remove(node.getId().getText());
@@ -186,10 +185,10 @@ public class Interpretor extends DepthFirstAdapter {
 
     private void checkForTarget(){
         if (this.target == null){
-            throw new RuntimeException("Target process is not defined before program calls.");
+            throw new MlException("Target process is not defined before program calls.",null);
         }
         if(this.size == 0){
-            throw new RuntimeException("Data size has not been defined before program calls.");
+            throw new MlException("Data size has not been defined before program calls.",null);
         }
     }
 }

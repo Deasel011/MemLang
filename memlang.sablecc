@@ -45,7 +45,7 @@ Tokens
     print = 'print';
     target = 'Target';
     size = 'Size';
-    exec = 'exec';
+    exec = 'exec'|'execute';
     stop = 'stop';
 
 
