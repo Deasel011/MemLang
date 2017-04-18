@@ -48,10 +48,14 @@ _Usage_
 
 ------------**BLOCKS**------------
 
-_**execute**_ - Defines an execute block to be executed on a thread each X miliseconds.
+_**execute**_ - defines an execute block to be executed on a thread each X miliseconds.
 
 _Usage_
 
     exec fooblock 1500 { set foo 99 }
 
-_**stop**_
+_**stop**_ - stops the execution of a block thread
+
+_Usage_
+
+    stop fooblock
