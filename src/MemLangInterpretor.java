@@ -24,6 +24,12 @@ public class MemLangInterpretor {
             try {
                 String s = br.readLine();
                 while(s!=null){
+                    if(s.matches(".*\\{[^\\}]*")){
+                        while (!s.matches(".*\\}.*")){
+                            s+= " ";
+                            s += br.readLine();
+                        }
+                    }
                     in = new PushbackReader(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(s.getBytes()))), 1024);
                     Node syntaxTree = null;
                     try{
@@ -41,7 +47,7 @@ public class MemLangInterpretor {
                     }catch (MlException e){
                         System.out.println(e.getMessage());
                     }catch(RuntimeException e){
-                        e.printStackTrace();
+                        System.out.println("Cannot compute! proceeding!");
                     }catch (java.lang.UnsatisfiedLinkError e){
                         System.out.println("Error, must be on Windows platform");
                     }catch (java.lang.NoClassDefFoundError e){
